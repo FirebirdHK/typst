@@ -22,6 +22,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Check out
         uses: actions/checkout@v7
@@ -69,3 +71,17 @@ jobs:
             template/main.pdf
             tests/contrast.pdf
           if-no-files-found: error
+
+      # Artifacts need a login to download, so the README links the same PDFs
+      # through a rolling `latest` prerelease: stable URLs, re-uploaded in
+      # place on every push to main.
+      - name: Refresh the latest PDFs
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          gh release view latest >/dev/null 2>&1 ||
+            gh release create latest --prerelease --title "Latest build" \
+              --notes "Decks from the most recent push to main. URLs are stable; the files are replaced on every push."
+          gh release upload latest examples/showcase.pdf template/main.pdf tests/contrast.pdf --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}

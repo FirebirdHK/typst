@@ -65,7 +65,9 @@ typst watch deck.typ          # recompile on save — the authoring loop
 ```
 
 Works from any directory with no `--root`: the deck imports the package by
-name, exactly as an installed package does.
+name, exactly as an installed package does. The showcase built from the
+latest push to `main` is always at
+[showcase.pdf](https://github.com/FirebirdHK/typst/releases/download/latest/showcase.pdf).
 
 ## Configuration
 
