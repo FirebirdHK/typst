@@ -1,12 +1,12 @@
 // Imports the package by name, so the deck renders what an installed deck sees.
 #import "@preview/firebird-slides:0.3.0": *
+#import "@preview/fletcher:0.5.8": diagram, node, edge
 
 #show: firebird.with(
-  title: "Crypto 101: Introduction to Cryptography and Cryptanalysis",
-  subtitle: "From Caesar to one-time pads",
-  course: "COMP2633 Competitive Programming in Cybersecurity I",
+  title: "Crypto 101",
+  subtitle: "A feature tour disguised as a lecture",
+  course: "COMP2633 Intro to Cybersecurity",
   authors: ("Dhairya (wylited)",),
-  helpers: ("Isaac (sayako)",),
   credits: ("Course materials: Crypto 101",),
 )
 
@@ -196,6 +196,39 @@ b'Wm1KN1lqWTBYekZ6WDI0d2RGOWxibU45'
       - `cols` is the workhorse: prose beside a figure or a snippet.
     ],
     ratio: 1.35fr,
+  )
+]
+
+#slide(title: "Diagrams", subtitle: "@preview/fletcher — any package plugs in")[
+  #cols(
+    [
+      #diagram(
+        spacing: (8mm, 10mm),
+        node((0, 0), [$m$]),
+        node((1, 0), fill: pal.brand-a, stroke: none, inset: 8pt,
+          text(fill: pal.surface, weight: 600)[E]),
+        node((2, 0), [$c$]),
+        node((3, 0), fill: pal.brand-a, stroke: none, inset: 8pt,
+          text(fill: pal.surface, weight: 600)[D]),
+        node((4, 0), [$m'$]),
+        node((1.5, -1), [$k$]),
+        edge((0, 0), (1, 0), "-|>", stroke: 0.9pt),
+        edge((1, 0), (2, 0), "-|>", stroke: 0.9pt),
+        edge((2, 0), (3, 0), "-|>", stroke: 0.9pt),
+        edge((3, 0), (4, 0), "-|>", stroke: 0.9pt),
+        edge((1.5, -1), (1, 0), "-|>", stroke: 0.9pt),
+        edge((1.5, -1), (3, 0), "-|>", stroke: 0.9pt),
+      )
+    ],
+    [
+      - Import the package, draw: nodes take content, edges route between
+        them, and everything scales with the slide.
+      - Colours come from the theme's `pal` — the boxes are `brand-a`, text
+        on them `surface`.
+      - #strong[cetz] for raw geometry, #strong[fletcher] for arrows; both
+        are content, so they flow in `cols` like anything else.
+    ],
+    ratio: 1.25fr,
   )
 ]
 

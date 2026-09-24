@@ -52,7 +52,7 @@ above unless overridden:
 
 ![Subsection divider](docs/img/slide-19.png)
 
-![End slide](docs/img/slide-30.png)
+![End slide](docs/img/slide-31.png)
 
 `bio-slide(name, discord:, photo:, body)` — the presenter, photo left:
 
@@ -67,12 +67,12 @@ render as a clickable card:
 `admin-slide(items, title:, note:, qr:)` — the weekly schedule; each item is a
 `(kind:, what:, when:, where:)` dictionary with the same three kinds:
 
-![Admin slide](docs/img/slide-28.png)
+![Admin slide](docs/img/slide-29.png)
 
 `credits-slide(entries, title:, note:)` — `(item, source)` pairs, source in
 small mono:
 
-![Credits slide](docs/img/slide-29.png)
+![Credits slide](docs/img/slide-30.png)
 
 ## Writing on slides
 
@@ -87,7 +87,7 @@ only when the prose points at one:
 
 ![Code with line numbers](docs/img/slide-10.png)
 
-![A shell snippet](docs/img/slide-25.png)
+![A shell snippet](docs/img/slide-26.png)
 
 `terminal(src, title:)` renders a session: `$ ` prompt, `> ` continuation,
 `# ` muted comment:
@@ -131,6 +131,11 @@ Anatomy of the pieces together — `cols` with a `code` file bar:
 
 ![Anatomy of a slide](docs/img/slide-23.png)
 
+Diagrams come from any package on the Universe — here `@preview/fletcher`,
+coloured straight from the theme's `pal`:
+
+![A fletcher diagram: the key feeding encrypt and decrypt](docs/img/slide-24.png)
+
 ## Overlays, notes, handout
 
 `#pause` inside a slide body splits it into subslides; `#uncover(n)` and
@@ -168,7 +173,7 @@ theming hooks — is touying's, and this template inherits it:
 
 ## Blobcats
 
-![Blobcat wall](docs/img/slide-26.png)
+![Blobcat wall](docs/img/slide-27.png)
 
 ```typ
 Inline, on the baseline: #blobcat("party") deploy succeeded
@@ -195,7 +200,7 @@ names on a scratch slide.
 
 ## Repo layout
 
-![Where things live](docs/img/slide-27.png)
+![Where things live](docs/img/slide-28.png)
 
 Authoring a full lecture on top of the template? [`template/main.typ`](template/main.typ)
 is the starter deck to copy; editing the template itself starts with
@@ -207,4 +212,4 @@ The section the deck uses to teach itself:
 
 ![Section divider for the template tour](docs/img/slide-22.png)
 
-![Cheat sheet](docs/img/slide-24.png)
+![Cheat sheet](docs/img/slide-25.png)
