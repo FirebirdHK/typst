@@ -1,0 +1,18 @@
+[package]
+name = "firebird-slides"
+version = "0.3.0"
+entrypoint = "lib.typ"
+authors = ["Firebird CTF Team <firebird@connect.ust.hk>"]
+license = "MIT"
+description = "Slide decks for the HKUST Firebird CTF team."
+repository = "https://github.com/hkust-firebird/firebird-slides"
+keywords = ["slides", "presentation", "ctf", "hkust", "firebird"]
+categories = ["presentation"]
+compiler = "0.15.1"
+exclude = ["examples", "tests", "tmp", "build", ".github", ".gitignore", ".omp",
+           "skills", "notes", "*.pdf", "vendor/fonts"]
+
+[template]
+path = "template"
+entrypoint = "main.typ"
+thumbnail = "thumbnail.png"

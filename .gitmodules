@@ -1,0 +1,3 @@
+[submodule "assets/blobcats"]
+	path = assets/blobcats
+	url = https://github.com/DuckOfDisorder/BlobCats

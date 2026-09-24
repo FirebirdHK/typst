@@ -1,0 +1,17 @@
+# Compiled decks. `typst compile deck.typ` writes the PDF next to the source, so
+# the whole tree is one `*.pdf` rule; nothing built is ever committed.
+*.pdf
+build/
+dist/
+
+# Scratch deck that imports the package by name — your playground, not ours.
+tmp/
+
+# Bug investigations and one-off probes live in tmp/; notes/ is the same class
+# of scratch (session artifacts, never shipped).
+notes/
+
+# Machine-local omp discovery; the skills themselves are the committed skills/.
+.omp/
+
+.DS_Store

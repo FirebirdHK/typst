@@ -1,0 +1,71 @@
+name: build
+
+# The gates are part of the library: a deck compiled with `--input gate=true`
+# fails when a slide is taller than its body box, or when a code/terminal block
+# had to shrink below the deck's size. That is the entire check — no shell
+# scripts, no Python, nothing to install beyond typst itself.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  TYPST_VERSION: "0.15.1"
+  # The bundled fonts, so CI renders what a deck author sees.
+  TYPST_FONT_PATHS: ${{ github.workspace }}/vendor/fonts
+  # A package path inside the checkout, so CI never depends on where typst's data
+  # directory happens to live. Same layout as the real one: <namespace>/<name>/<version>.
+  TYPST_PACKAGE_PATH: ${{ github.workspace }}/.typst-packages
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Install typst ${{ env.TYPST_VERSION }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.local/bin"
+          curl -fsSL -o /tmp/typst.tar.xz \
+            "https://github.com/typst/typst/releases/download/v${TYPST_VERSION}/typst-x86_64-unknown-linux-musl.tar.xz"
+          tar -xJf /tmp/typst.tar.xz --strip-components=1 -C "$HOME/.local/bin"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      # The decks import the package by name — the same thing an installed deck
+      # does — so the working copy has to be visible as a package. Locally that is
+      # a symlink into typst's package directory (README); here it is the
+      # `TYPST_PACKAGE_PATH` above, so the link needs no knowledge of the machine.
+      - name: Link the package
+        run: |
+          set -euo pipefail
+          ver="$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)"
+          pkg="$TYPST_PACKAGE_PATH/preview/firebird-slides"
+          mkdir -p "$pkg"
+          ln -sfn "$GITHUB_WORKSPACE" "$pkg/$ver"
+
+      # Showcase, starter deck, palette audit. The contrast file asserts every
+      # foreground/background pair at every size it is used at, so it fails the
+      # same way the layout gates do.
+      - name: Gates
+        run: |
+          set -euo pipefail
+          typst compile --input gate=true examples/showcase.typ
+          typst compile --input gate=true template/main.typ
+          typst compile tests/contrast.typ
+
+      # Latest deck without committing a PDF: the run's artifact has it.
+      - name: Publish this run's PDFs
+        uses: actions/upload-artifact@v7
+        with:
+          name: decks
+          path: |
+            examples/showcase.pdf
+            template/main.pdf
+            tests/contrast.pdf
+          if-no-files-found: error
