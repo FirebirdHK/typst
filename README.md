@@ -1,16 +1,10 @@
 # firebird-slides
 
-Slide deck template for the HKUST Firebird CTF team: 16:9, the team's
-teal/orange brand, and the components a CTF lecture needs — callouts, code with
-a file bar, terminal sessions, scored challenges, tables, math — built on
-[touying](https://touying-typ.github.io/), so overlays, speaker notes and
-handout mode come with the slide furniture. It is the Typst counterpart of the
-team's Beamer theme.
+A presentation template and theme for the HKUST Firebird CTF team internal
+training. Built on [touying](https://touying-typ.github.io/).
 
-The repo is the package: decks import it by name
-(`@preview/firebird-slides:0.3.0`) and compile with plain `typst compile`,
-no flags. [`examples/showcase.typ`](examples/showcase.typ) renders every
-component; [`USAGE.md`](USAGE.md) documents them with the rendered slides.
+Every component is rendered in [`examples/showcase.typ`](examples/showcase.typ)
+and documented with images in [`USAGE.md`](USAGE.md).
 
 ![The showcase deck's cover slide](docs/img/slide-01.png)
 
@@ -23,11 +17,10 @@ pkg="$(typst info 2>&1 | sed -n 's/^[[:space:]]*Package path[[:space:]]*//p')/pr
 mkdir -p "$pkg" && ln -sfn "$PWD" "$pkg/0.3.0"
 ```
 
-The submodules bring the BlobCats art (`assets/blobcats/`); an existing clone
-catches up with `git submodule update --init`. The link makes the working copy
-the package, so edits to `lib.typ` reach every deck on the next compile. If
-IBM Plex is not installed system-wide, add `--font-path vendor/fonts` (or set
-`TYPST_FONT_PATHS=$PWD/vendor/fonts`) — see [Fonts](#fonts).
+The submodules bring the BlobCats art; an existing clone catches up with
+`git submodule update --init`. The link makes the working copy the package, so
+edits to `lib.typ` reach every deck on the next compile. If IBM Plex is not
+installed system-wide, add `--font-path vendor/fonts` — see [Fonts](#fonts).
 
 ## Minimal deck
 
@@ -61,12 +54,11 @@ Copy [`template/main.typ`](template/main.typ), or start from this:
 
 ```sh
 typst compile deck.typ        # PDF next to the source
-typst watch deck.typ          # recompile on save — the authoring loop
+typst watch deck.typ          # recompile on save
 ```
 
-Works from any directory with no `--root`: the deck imports the package by
-name, exactly as an installed package does. The showcase built from the
-latest push to `main` is always at
+Decks import the package by name, so this works from any directory with no
+flags. The showcase built from the latest `main`:
 [showcase.pdf](https://github.com/FirebirdHK/typst/releases/download/latest/showcase.pdf).
 
 ## Configuration
@@ -91,13 +83,9 @@ latest push to `main` is always at
 ## Overlays
 
 `#pause` splits a slide into subslides; `#uncover(n)`, `#only(n)` and
-`#speaker-note[…]` place content per step. `firebird.with(handout: true)`
-collapses every overlay to its final state. The header, progress bar and
-`n / total` count the slide, never the overlay.
-
-Everything else — `#meanwhile`, slide functions, theming hooks — is touying's;
-the [touying documentation](https://touying-typ.github.io/) applies to this
-template unchanged.
+`#speaker-note[…]` place content per step; `firebird.with(handout: true)`
+collapses every overlay. Everything else is
+[touying's](https://touying-typ.github.io/).
 
 ## Components
 
@@ -120,14 +108,12 @@ template unchanged.
 | `inline-code("x")`, `pill[LABEL]` | inline snippet / chip |
 | `serif[…]` | the serif voice inline |
 
-Rendered examples of every component: [USAGE.md](USAGE.md).
+Rendered examples: [USAGE.md](USAGE.md).
 
 ## Blobcats
 
-The [BlobCats](https://github.com/DuckOfDisorder/BlobCats) pack (Apache-2.0)
-is a git submodule at `assets/blobcats/`, and `#blobcat` resolves names
-against a committed table — 209 cats, inline on the text baseline or in a
-labelled wall:
+[BlobCats](https://github.com/DuckOfDisorder/BlobCats) (Apache-2.0) ship as a
+git submodule; `#blobcat("party")` puts one on the text baseline:
 
 ```typ
 Deploy succeeded #blobcat("party")
@@ -135,21 +121,12 @@ Deploy succeeded #blobcat("party")
 ```
 
 Names ignore case, spaces, `_` and a leading `BlobCat`; a wrong name fails the
-compile with its best guesses, and `#blobcat-list()` renders every name on a
-scratch slide.
+compile with its best guesses. `#blobcat-list()` lists all 209.
 
 ## Verifying your deck
 
-`--input debug=true` draws the body box and stamps an overflow badge on every
-content slide; `--input gate=true` turns the same measurement into a compile
-error that names the slide:
-
-```
-error: slide 23 [Ciphers] is 19pt taller than its body box — split the slide
-or trim it; never shrink the type.
-```
-
-The three checks a deck must pass (CI runs them on every push):
+`--input debug=true` draws the body box and overflow badges; `--input
+gate=true` fails the compile, naming the slide. The three checks CI runs:
 
 ```sh
 typst compile --input gate=true examples/showcase.typ
@@ -157,13 +134,11 @@ typst compile --input gate=true template/main.typ
 typst compile tests/contrast.typ
 ```
 
-Contributing — including what CI does and how the template itself is edited:
-[CONTRIBUTING.md](CONTRIBUTING.md).
+Contributing: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Fonts
 
-One type family in three voices, bundled in `vendor/fonts` (SIL OFL) so every
-machine renders the deck the same:
+One family, three voices, bundled in `vendor/fonts` (SIL OFL):
 
 | Voice | Family | Used for |
 | --- | --- | --- |
@@ -171,15 +146,10 @@ machine renders the deck the same:
 | mono | **IBM Plex Mono** | code, terminals, file names |
 | serif | **IBM Plex Serif** | block quotes, `#serif[…]` accents |
 
-Typst reads fonts from the system, `--font-path`, and `TYPST_FONT_PATHS` —
-pick one:
-
 ```sh
 typst compile --font-path vendor/fonts deck.typ   # per command
 TYPST_FONT_PATHS=$PWD/vendor/fonts typst watch deck.typ
-cp vendor/fonts/*/*.ttf ~/Library/Fonts/          # installed once, system-wide
+cp vendor/fonts/*/*.ttf ~/Library/Fonts/          # system-wide
 ```
 
-Math stays on Typst's New Computer Modern. A missing family falls through to a
-platform font — the deck compiles either way. `display: "serif"` moves the
-cover, section and slide titles into the serif voice.
+`display: "serif"` moves the titles to the serif voice.
